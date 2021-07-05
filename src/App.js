@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
 
+import NewExpense from './Components/NewExpense/NewExpense';
+import Expenses from './Components/Expenses/Expenses';
+import { useState } from 'react';
+  
+const DUMMY_EXPENSES=[
+  { id : 1,expenseDate : new Date(2021,1,26), expenseTitle :"Toilet Paper", expenseAmount : 0.67},
+  {id : 2, expenseDate : new Date(2021,2,14), expenseTitle :"Pizza", expenseAmount : 2.9},
+  {id : 3, expenseDate : new Date(2021,0,28), expenseTitle :"Books", expenseAmount : 50.8},
+  {id : 4, expenseDate : new Date(2021,4,9), expenseTitle :"Bakery", expenseAmount : 100.06}
+];
 function App() {
+
+  const [expenses,setExpenses] = useState(DUMMY_EXPENSES);
+const [filteredExpenses,setFilteredExpenses] = useState(expenses);
+
+  const addExpenseHandler = (enteredExpense) => {
+ 
+setExpenses([enteredExpense,...expenses]);
+console.log(expenses);
+  }
+ const  filteredYearHandler = (year) => {
+   
+setFilteredExpenses(expenses.filter((exp)=> exp.expenseDate.getFullYear().toString() === year.toString()));
+ }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+     <NewExpense onAddExpense = {addExpenseHandler}/>
+     
+      <Expenses expense={filteredExpenses} FilteredYear={filteredYearHandler}></Expenses>
     </div>
   );
 }
